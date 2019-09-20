@@ -1,0 +1,14 @@
+{
+  "name": "task-queue",
+  "version": "1.0.2",
+  "description": "任务队列",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@clevok/message": "^1.0.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
