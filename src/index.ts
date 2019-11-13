@@ -1,7 +1,6 @@
 import CallbackQueue from './callback-queue';
 import EventLoop from './event-loop';
 
-
 export const Queue = CallbackQueue;
 export const Loop = EventLoop;
 

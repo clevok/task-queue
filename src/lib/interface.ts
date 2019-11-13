@@ -1,10 +1,14 @@
 export type IFinishCallback = (
-    finish: Function,
+    /**您需主动调用finish方法以表示该任务结束 */
+    finish: Function
 ) => void;
 
 export interface IOption {
-    /** 执行超时回调函数 */
-    abort?: Function
+    /** 
+     * 执行超时回调函数
+     * @param {manual|auto} type - 抛出类型, manual用户主动抛出, auto超时自动抛出
+     */
+    abort?: (type: 'manual' | 'auto') => any
 
     /** 执行超时事件 */
     abortTime?: number

@@ -41,18 +41,20 @@ export default class CallbackQueue extends Message {
             handle && eventLoop.push(handle);
         });
         eventLoop._addEventListener(this);
+        return this;
     }
 
     /**
-     * 添加任务
+     * 添加任务, 已经执行的无法手动抛弃
+     * @return {{abort:Function}} 移除刚刚添加进去的
      */
-    push (handle: IOption | IFinishCallback): void {
+    push (handle: IOption | IFinishCallback) {
 
         /** 当超过队列的时候, 将移除第一个 */
         if (this.cache.length >= this.MAX_LINE) {
             this.cache.shift();
         }
-
+        
         if (typeof handle === 'function') {
             handle = {
                 success: handle
@@ -60,6 +62,18 @@ export default class CallbackQueue extends Message {
         }
         this.cache.push(handle);
         this.emit('push');
+
+        return {
+            /** 抛出,当还在队列中其效 */
+            abort: () => {
+                let _handle = handle as IOption;
+                let index = this.cache.indexOf(_handle);
+                if (index !== -1) {
+                    this.cache.splice(index, 1);
+                    _handle.abort && _handle.abort('manual');
+                }
+            }
+        }
     }
 
     /**

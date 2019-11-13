@@ -11,25 +11,26 @@ import EventLoop from './event-loop';
 export default class CallbackQueue extends Message {
     /** 最大队列, 表示无穷队列 */
     private MAX_LINE;
-    /** 执行超时时间,指执行后的超时时间 */
-    private ABORT_TIME;
     /** 缓存队列 */
     private cache;
     /**
      * 任务池
-     * @param {number} [MAX_LINE=Infinity] 设置缓存任务条数,默认无穷大
-     * @param {number} [ABORT_TIME=15000] 设置执行超时时间,默认15秒
+     * @param {number} [MAX_LINE=Infinity] - 设置缓存任务条数,默认无穷大,超过后将移除最前面的
      */
-    constructor(MAX_LINE?: number, ABORT_TIME?: number);
+    constructor(MAX_LINE?: number);
     /**
      * 绑定 跑道, 监听跑道的task需求
      * @param eventLoop 事件循环对象
      */
-    addEventListener(eventLoop: EventLoop): void;
+    addEventListener(eventLoop: EventLoop): this;
     /**
-     * 添加任务
+     * 添加任务, 已经执行的无法手动抛弃
+     * @return {{abort:Function}} 移除刚刚添加进去的
      */
-    push(handle: IOption | IFinishCallback): void;
+    push(handle: IOption | IFinishCallback): {
+        /** 抛出,当还在队列中其效 */
+        abort: () => void;
+    };
     /**
      * 拉取任务
      */

@@ -15,6 +15,17 @@ TaskQueue.push((finsh) => {
     finsh();
 });
 
+
+Tast.push({
+    abort(type) {
+        // type值为auto是超时抛弃,manual是用户主动调用abort方法
+    },
+    success (finish) {
+        console.log(4);
+    }
+}).abort();
+
+
 // 案例2
 import {Queue, Loop} from '@clevok/task-queue';
 const callbackQueue = new Queue().addEventListener(new Loop(999, 15000));
@@ -77,4 +88,3 @@ callbackQueue.push({
 ### 不完善的地方
 暂不支持告诉运输工把这个任务给哪个消费者
 运输工和消费者多个搭配, 目前是每次都先询问最先绑定的人, 之后可以`雨露均沾`
-暂时没有写中间我不要了,临时剔除我的某个任务

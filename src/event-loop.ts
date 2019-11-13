@@ -67,7 +67,7 @@ export default class EventLoop extends Message {
         });
 
         timeout = setTimeout(() => {
-            handle.abort && handle.abort();
+            handle.abort && handle.abort('auto');
             !isFinshed && this.abort();
 
             isFinshed = true;

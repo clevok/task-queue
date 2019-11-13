@@ -22,12 +22,12 @@ export default class EventLoop extends Message {
      */
     constructor(MAX_LINE?: number, ABORT_TIME?: number);
     /**
+     * 此方法由callback-queue自动绑定调用,开发者请勿调用
      * 绑定生产者来资源的事件
      * 要求生产者发出put事件, 表示有新资源
-     *
      * @param {object} event 生产者
      */
-    addEventListener(callbackQueue: CallbackQueue): void;
+    _addEventListener(callbackQueue: CallbackQueue): void;
     /**
      * 塞入事件
      * @param handle
