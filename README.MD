@@ -6,11 +6,16 @@
 ```js
 // 默认对外导出一个没有上限的任务池,每次执行一个,超时事件15秒
 import TaskQueue from '@clevok/task-queue';
-TaskQueue.push(() => {
-
+TaskQueue.push((finsh) => {
+    console.log('执行1');
+    setTimeout(finsh, 500);
 })
+TaskQueue.push((finsh) => {
+    console.log('执行2');
+    finsh();
+});
 
-
+// 案例2
 import {Queue, Loop} from '@clevok/task-queue';
 const callbackQueue = new Queue().addEventListener(new Loop(999, 15000));
 callbackQueue.push((finsh)=> 
@@ -72,4 +77,4 @@ callbackQueue.push({
 ### 不完善的地方
 暂不支持告诉运输工把这个任务给哪个消费者
 运输工和消费者多个搭配, 目前是每次都先询问最先绑定的人, 之后可以`雨露均沾`
-
+暂时没有写中间我不要了,临时剔除我的某个任务
