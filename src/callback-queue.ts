@@ -13,22 +13,17 @@ export default class CallbackQueue extends Message {
     
     /** 最大队列, 表示无穷队列 */
     private MAX_LINE: number;
-
-    /** 执行超时时间,指执行后的超时时间 */
-    private ABORT_TIME: number;
     
     /** 缓存队列 */
     private cache: IOption[] = [];
 
     /**
      * 任务池
-     * @param {number} [MAX_LINE=Infinity] 设置缓存任务条数,默认无穷大
-     * @param {number} [ABORT_TIME=15000] 设置执行超时时间,默认15秒
+     * @param {number} [MAX_LINE=Infinity] - 设置缓存任务条数,默认无穷大,超过后将移除最前面的
      */
-    constructor (MAX_LINE: number = Infinity, ABORT_TIME: number = 15000) {
+    constructor (MAX_LINE: number = Infinity) {
         super();
         this.MAX_LINE = MAX_LINE;
-        this.ABORT_TIME = ABORT_TIME;
     }
 
     /**
@@ -45,6 +40,7 @@ export default class CallbackQueue extends Message {
             let handle = this.get();
             handle && eventLoop.push(handle);
         });
+        eventLoop._addEventListener(this);
     }
 
     /**
@@ -61,9 +57,6 @@ export default class CallbackQueue extends Message {
             handle = {
                 success: handle
             }
-        }
-        if (!handle.abortTime) {
-            handle.abortTime = this.ABORT_TIME;
         }
         this.cache.push(handle);
         this.emit('push');

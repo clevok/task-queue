@@ -27,19 +27,17 @@ export default class EventLoop extends Message {
      */
     constructor (MAX_LINE: number = 1, ABORT_TIME: number = 15000) {
         super();
-
         this.MAX_LINE = MAX_LINE;
-
         this.ABORT_TIME = ABORT_TIME;
     }
 
     /**
+     * 此方法由callback-queue自动绑定调用,开发者请勿调用
      * 绑定生产者来资源的事件
      * 要求生产者发出put事件, 表示有新资源
-     * 
      * @param {object} event 生产者
      */
-    addEventListener (callbackQueue: CallbackQueue) {
+    _addEventListener (callbackQueue: CallbackQueue) {
 
         /** 
          * 生产者push事件, 表示生产者来东西了
