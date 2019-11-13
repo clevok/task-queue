@@ -4,8 +4,15 @@
 
 ### 快速使用
 ```js
-import {EventLoop, CallbackQueue} from '@clevok/task-queue';
-const callbackQueue = new CallbackQueue().addEventListener(new EventLoop(999, 15000));
+// 默认对外导出一个没有上限的任务池,每次执行一个,超时事件15秒
+import TaskQueue from '@clevok/task-queue';
+TaskQueue.push(() => {
+
+})
+
+
+import {Queue, Loop} from '@clevok/task-queue';
+const callbackQueue = new Queue().addEventListener(new Loop(999, 15000));
 callbackQueue.push((finsh)=> 
 {})
 ```
@@ -25,14 +32,14 @@ callbackQueue.push((finsh)=>
 
 ```js
 // 当超过15个后我将抛弃最前面的(还是抛弃最后的好点?)默认无穷大
-const callbackQueue = new CallbackQueue(15);
+const callbackQueue = new Queue(15);
 ```
 
 ### 消费者
 吃任务的人,可以设置最多能同时处理几个,以及处理最大事件,超过后将会自动抛弃,回调abort事件
 ```js
 // 注意咯,是毫秒, 下面表示同时处理2个, 处理超时事件是13秒
-const eventLoop = new EventLoop(2, 13000);
+const eventLoop = new Loop(2, 13000);
 // 别忘了在运输工那边注册下
 callbackQueue.addEventListener(eventLoop);
 
